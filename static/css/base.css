@@ -1,0 +1,57 @@
+:root {
+    --yonobi-offwhite: #f9f7f2;
+    --yonobi-lightgray: #e5e1d8;
+    --yonobi-charcoal: #333333;
+    --yonobi-black: #1a1a1a;
+    --yonobi-clay: #8c735d;
+    
+    --font-serif: 'Cardo', serif;
+    --font-sans: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--yonobi-offwhite);
+    color: var(--yonobi-black);
+    font-family: var(--font-serif);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+.tracking-wide {
+    letter-spacing: 0.2em;
+}
+
+.tracking-wider {
+    letter-spacing: 0.25em;
+}
+
+.font-sans {
+    font-family: var(--font-sans);
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.text-xs {
+    font-size: 0.625rem; /* 10px */
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.text-clay {
+    color: var(--yonobi-clay);
+}
+
+.border-light {
+    border-color: var(--yonobi-lightgray);
+}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results for "{{ query }}"{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Search Results</h1>
+    <h2>Results for: "<span id="search-query">{{ query }}</span>"</h2>
+
+    {% if products %}
+        <p class="text-success mb-4">Found {{ products|length }} matching item(s).</p>
+        
+        <!-- Product Grid/List -->
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="product-results-grid">
+            {% for product in products %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm product-card">
+                        {% if product.primary_image %}
+                            <img src="{{ product.primary_image.url }}" class="card-img-top" alt="{{ product.name }}">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text text-muted mb-2">Category: {{ product.category.title|default:"N/A" }}</p>
+                            <p class="fs-4 fw-bold text-primary">${{ product.price }}</p>
+                            <!-- Add a button here that links to the individual product page if available -->
+                            <a href="#" class="btn btn-sm btn-outline-primary mt-auto">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <div class="alert alert-warning text-center" role="alert">
+            No products found matching the query "{{ query }}". Try a different term.
+        </div>
+    {% endif %}
+</div>
+
+<!-- Simple Search Form to allow refinement on the results page -->
+<div class="container mt-5 mb-5 p-3 border rounded bg-light">
+    <h5>Refine Your Search</h5>
+    <form action="{% url 'search' %}" method="GET" class="d-flex">
+        <input type="text" name="q" class="form-control me-2" placeholder="Enter new search term..." value="{{ query }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+{% endblock %}

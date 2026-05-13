@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Banner Section -->
+<section class="relative h-screen w-full overflow-hidden">
+    <!-- Django Static Image Tag -->
+    <img src="{% static 'images/hero_banner.jpg' %}" 
+         class="absolute inset-0 w-full h-full object-cover brightness-75 transition-transform duration-[2000ms] hover:scale-105" 
+         alt="GOURME Mushrooms Hero">
+    
+    <!-- Text Overlay -->
+    <div class="relative h-full flex flex-col justify-center items-center text-center px-4">
+        <h1 class="text-white text-6xl md:text-8xl font-serif uppercase tracking-[0.2em] leading-tight drop-shadow-2xl">
+            Nourish Your Body,<br>
+            <span class="italic lowercase tracking-normal">support your mind</span>
+        </h1>
+        <a href="/shop" class="mt-12 px-12 py-4 bg-white text-black text-xs uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-all duration-700 ease-in-out border border-transparent hover:border-white">
+            Explore the Collection
+        </a>
+    </div>
+</section>
+
+<!-- Featured Collection: Ultra-Smooth Pill Morph -->
+<section class="w-full px-6 py-10 md:px-12 bg-[#F5F5F0]">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for cat in categories %}
+        <a href="{% if cat.slug == 'culinary-wisdom' %}/page/recipes/{% elif cat.slug == 'the-science-soul' %}/page/benefits/{% else %}/shop/{% endif %}" class="group relative h-[320px] flex flex-col justify-end p-8 transition-all duration-[2000ms] ease-in-out hover:rounded-[100px]" style="background-color: {{ cat.hex_color }}">
+            <h2 class="relative {% if cat.hex_color == '#D7C9B8' %}text-[#2D2D2A]{% else %}text-white{% endif %} text-2xl font-serif uppercase tracking-widest leading-tight">
+                {{ cat.title }}
+            </h2>
+            <span class="relative {% if cat.hex_color == '#D7C9B8' %}text-[#2D2D2A]/60{% else %}text-white/70{% endif %} text-[10px] uppercase tracking-widest mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-[2000ms]">Explore</span>
+        </a>
+        {% endfor %}
+
+    </div>
+</section>
+
+
+<!-- Product Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 pt-24 px-12 gap-x-4 gap-y-16 bg-[#F5F5F0]">
+    {% for product in products %}
+    <div class="group relative overflow-hidden bg-white">
+        <!-- Primary Image -->
+        {% if product.primary_image %}
+        <img src="{{ product.primary_image.url }}" class="w-full transition-opacity duration-500 group-hover:opacity-0">
+        {% else %}
+        <div class="w-full aspect-square bg-gray-100 flex items-center justify-center transition-opacity duration-500 group-hover:opacity-0">No Primary</div>
+        {% endif %}
+        
+        <!-- Hover Image -->
+        {% if product.hover_image %}
+        <img src="{{ product.hover_image.url }}" class="absolute top-0 left-0 w-full opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        {% else %}
+        <div class="absolute top-0 left-0 w-full aspect-square bg-gray-200 opacity-0 flex items-center justify-center transition-opacity duration-500 group-hover:opacity-100">No Hover</div>
+        {% endif %}
+        
+        <div class="p-4 text-center">
+            <p class="font-bold uppercase tracking-tight">{{ product.name }}</p>
+            <p>${{ product.price }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Product Discovery (Science & Soul) -->
+<section class="relative w-full bg-[#F5F5F0] border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row relative">
+        
+        <!-- Left Side: Sticky Image -->
+        <div class="w-full md:w-1/2 h-[50vh] md:h-screen sticky top-0 flex items-center justify-center py-12 md:p-12 z-10">
+            <div class="relative w-full aspect-square md:aspect-[4/5] overflow-hidden bg-gray-200 shadow-md rounded-sm">
+                <img id="discovery-img-0" src="{% static 'images/science-and-soul/reishi.jpeg' %}" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-100">
+                <img id="discovery-img-1" src="{% static 'images/science-and-soul/lion.jpeg' %}" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-0">
+                <img id="discovery-img-2" src="{% static 'images/science-and-soul/cor.jpeg' %}" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 opacity-0">
+            </div>
+        </div>
+
+        <!-- Right Side: Scrolling Text Blocks -->
+        <div class="w-full md:w-1/2 pb-[20vh] md:py-[20vh] z-20">
+            <!-- Block 0 -->
+            <div class="discovery-text min-h-[70vh] md:min-h-screen flex flex-col justify-center px-4 md:px-16 py-12 md:py-0" data-index="0">
+                <h3 class="text-xs md:text-sm uppercase tracking-[0.3em] text-[#A67B5B] mb-6 font-sans">Science & Soul</h3>
+                <h2 class="text-3xl md:text-5xl text-[#2D2D2A] font-serif mb-8 leading-tight">The Science of Reishi</h2>
+                <p class="text-base md:text-lg text-[#2D2D2A]/80 font-serif leading-relaxed">
+                    Revered for millennia as the 'Mushroom of Immortality'. Reishi contains potent triterpenes and beta-glucans. Modern science supports its role in modulating the immune system and promoting deep, restorative sleep. Our wild-foraged Reishi undergoes a dual-extraction process to ensure maximum bioavailability.
+                </p>
+            </div>
+            <!-- Block 1 -->
+            <div class="discovery-text min-h-[70vh] md:min-h-screen flex flex-col justify-center px-4 md:px-16 py-12 md:py-0" data-index="1">
+                <h3 class="text-xs md:text-sm uppercase tracking-[0.3em] text-[#A67B5B] mb-6 font-sans">Science & Soul</h3>
+                <h2 class="text-3xl md:text-5xl text-[#2D2D2A] font-serif mb-8 leading-tight">Lion's Mane & Neurogenesis</h2>
+                <p class="text-base md:text-lg text-[#2D2D2A]/80 font-serif leading-relaxed">
+                    Lion's Mane is nature's nutrient for the brain. Rich in hericenones and erinacines, it is uniquely capable of crossing the blood-brain barrier to stimulate Nerve Growth Factor (NGF). Experience enhanced focus, mental clarity, and memory support without the jittery effects of caffeine.
+                </p>
+            </div>
+            <!-- Block 2 -->
+            <div class="discovery-text min-h-[70vh] md:min-h-screen flex flex-col justify-center px-4 md:px-16 py-12 md:py-0" data-index="2">
+                <h3 class="text-xs md:text-sm uppercase tracking-[0.3em] text-[#A67B5B] mb-6 font-sans">Science & Soul</h3>
+                <h2 class="text-3xl md:text-5xl text-[#2D2D2A] font-serif mb-8 leading-tight">Cordyceps for Cellular Energy</h2>
+                <p class="text-base md:text-lg text-[#2D2D2A]/80 font-serif leading-relaxed">
+                    Used by elite athletes and traditional herbalists alike, Cordyceps directly influences the body's ATP production—the primary currency of cellular energy. It enhances oxygen utilization and stamina, making it the perfect pre-workout natural botanical or afternoon revitalizer.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const textBlocks = document.querySelectorAll('.discovery-text');
+        
+        if(textBlocks.length > 0) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const index = entry.target.getAttribute('data-index');
+                        // Hide all images
+                        document.getElementById('discovery-img-0').classList.replace('opacity-100', 'opacity-0');
+                        document.getElementById('discovery-img-1').classList.replace('opacity-100', 'opacity-0');
+                        document.getElementById('discovery-img-2').classList.replace('opacity-100', 'opacity-0');
+                        // Show active image
+                        document.getElementById('discovery-img-' + index).classList.replace('opacity-0', 'opacity-100');
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '-40% 0px -40% 0px',
+                threshold: 0
+            });
+
+            textBlocks.forEach(block => observer.observe(block));
+        }
+    });
+</script>
+{% endblock %}

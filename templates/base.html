@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOURME | Authentic Mushrooms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom Yonobi Palette */
+        :root {
+            --yonobi-sage: #8A9A5B;
+            --yonobi-terra: #A67B5B;
+            --yonobi-charcoal: #2D2D2A;
+            --yonobi-clay: #D7C9B8;
+            --yonobi-offwhite: #F5F5F0;
+        }
+
+        body { 
+            background-color: var(--yonobi-offwhite); 
+            color: var(--yonobi-charcoal); 
+            font-family: serif; 
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Main Navigation Bar (Visible for desktop) -->
+    <nav class="fixed top-0 w-full bg-[var(--yonobi-offwhite)] shadow-lg z-50 p-4 flex justify-between items-center">
+        <!-- Left: Logo and Menu Toggle for Mobile -->
+        <div class="flex items-center space-x-6">
+            <a href="/" class="text-3xl font-serif tracking-[0.3em] uppercase text-[#2D2D2A]">GOURME</a>
+            <!-- Mobile Menu Button (Visible on small screens) -->
+            <button id="menu-btn" class="md:hidden hover:opacity-70 transition-opacity">
+                <i data-lucide="menu" class="w-6 h-6 text-[#2D2D2A]"></i>
+            </button>
+        </div>
+        
+        <!-- Center: Desktop Navigation Links (Hidden on mobile by default) -->
+        <div class="hidden lg:flex space-x-8 items-center">
+            <a href="/" class="text-[#A67B5B] font-semibold hover:text-[var(--yonobi-sage)] transition-colors uppercase tracking-widest text-sm flex items-center">Home</a>
+            <a href="/shop/" class="text-[#2D2D2A] font-semibold hover:text-[var(--yonobi-sage)] transition-colors uppercase tracking-widest text-sm flex items-center">Shop <i data-lucide="chevron-down" class="w-3 h-3 ml-1"></i></a>
+            <a href="/page/our-story/" class="text-[#2D2D2A] font-semibold hover:text-[var(--yonobi-sage)] transition-colors uppercase tracking-widest text-sm">Our Story</a>
+            <a href="/page/library/" class="text-[#2D2D2A] font-semibold hover:text-[var(--yonobi-sage)] transition-colors uppercase tracking-widest text-sm">Library</a>
+            <a href="/page/recipes/" class="text-[#2D2D2A] font-semibold hover:text-[var(--yonobi-sage)] transition-colors uppercase tracking-widest text-sm">Recipes</a>
+        </div>
+        
+        <!-- Right: Utility Icons & Search Trigger -->
+        <div class="flex items-center space-x-6 relative">
+            <!-- Search Trigger Button (Clickable Icon) -->
+            <button id="search-trigger-btn" class="text-[#2D2D2A] hover:opacity-70 transition-opacity hidden sm:block">
+                <i data-lucide="search" class="w-5 h-5" id="nav-search-icon"></i>
+            </button>
+            <!-- User Icon (Profile) -->
+            <button id="profile-btn" class="text-[#2D2D2A] hover:opacity-70 transition-opacity relative">
+                <i data-lucide="user" class="w-5 h-5"></i>
+            </button>
+            <!-- Cart Icon -->
+            <button id="cart-btn" class="text-[#2D2D2A] hover:opacity-70 transition-opacity relative">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                <span class="absolute -top-1.5 -right-1 text-[10px] font-sans bg-[#A67B5B]/80 px-1 rounded-full">0</span>
+            </button>
+        </div>
+    </nav>
+
+<!-- Search Overlay Component -->
+<div id="search-overlay" class="fixed top-0 left-0 w-full h-full bg-[#F5F5F0]/95 backdrop-blur-sm z-[65] hidden items-center justify-center p-4">
+    <form action="/search/" method="GET" class="w-full max-w-lg bg-white p-6 rounded-xl shadow-2xl flex space-x-3">
+        <input type="text" name="q" placeholder="Search for products, categories..." required class="flex-grow border-b-2 border-[#A67B5B] focus:border-[var(--yonobi-sage)] outline-none px-1 py-1 text-lg transition duration-300">
+        <button type="submit" class="bg-[var(--yonobi-sage)] text-white p-3 rounded-lg hover:bg-[#8A9A5B] transition flex items-center justify-center">
+            <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+    </form>
+</div>
+
+    <!-- Full-screen Menu (Retained for mobile functionality) -->
+    <div id="full-menu" class="fixed inset-0 bg-[#E8E4DF]/95 backdrop-blur-xl z-[60] transform -translate-y-full transition-transform duration-500 ease-in-out flex flex-col">
+        <!-- Menu Navigation Header (matches global nav) -->
+        <div class="w-full flex justify-between items-center p-6 text-[#2D2D2A]">
+            <button id="close-menu" class="hover:opacity-70 transition-opacity">
+                <i data-lucide="x" class="w-6 h-6 text-[#2D2D2A]"></i>
+            </button>
+            <a href="/" class="text-3xl font-serif tracking-[0.3em] uppercase">GOURME</a>
+            <div class="flex items-center space-x-6">
+                <button id="mobile-search-trigger" class="hover:opacity-70 transition-opacity">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+                <button class="hover:opacity-70 transition-opacity relative">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                    <span class="absolute -top-1 -right-2 text-[10px] font-sans">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Content -->
+        <div class="flex-grow flex items-center justify-center p-6 md:p-12 overflow-y-auto">
+            <div class="w-full max-w-6xl grid grid-cols-1 md:grid-cols-4 gap-12 text-[#2D2D2A]">
+                <!-- Shop -->
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-[#A67B5B] mb-8 font-sans">Shop</h4>
+                    <ul class="space-y-6 text-2xl font-serif">
+                        <li><a href="/shop/" class="hover:text-[#8A9A5B] transition-colors">New Products</a></li>
+                        <li><a href="/page/best-sellers/" class="hover:text-[#8A9A5B] transition-colors">Best Sellers</a></li>
+                        <li><a href="/page/extracts/" class="hover:text-[#8A9A5B] transition-colors">Extracts</a></li>
+                        <li><a href="/page/products/" class="hover:text-[#8A9A5B] transition-colors">Products</a></li>
+                    </ul>
+                </div>
+                <!-- Discover -->
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-[#A67B5B] mb-8 font-sans">Discover</h4>
+                    <ul class="space-y-6 text-2xl font-serif">
+                        <li><a href="/page/benefits/" class="hover:text-[#8A9A5B] transition-colors">Mushroom Benefits (The Library)</a></li>
+                        <li><a href="/page/recipes/" class="hover:text-[#8A9A5B] transition-colors">Recipes</a></li>
+                        <li><a href="/page/foraging-guides/" class="hover:text-[#8A9A5B] transition-colors">Foraging Guides</a></li>
+                        <li><a href="/page/story/" class="hover:text-[#8A9A5B] transition-colors">Our Story</a></li>
+                    </ul>
+                </div>
+                <!-- Value -->
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-[#A67B5B] mb-8 font-sans">Value</h4>
+                    <ul class="space-y-6 text-2xl font-serif">
+                        <li><a href="/page/offers/" class="hover:text-[#8A9A5B] transition-colors">Offers</a></li>
+                        <li><a href="/page/promos/" class="hover:text-[#8A9A5B] transition-colors">Promos</a></li>
+                        <li><a href="/page/combos/" class="hover:text-[#8A9A5B] transition-colors">Combos</a></li>
+                        <li><a href="/page/subscription-plans/" class="hover:text-[#8A9A5B] transition-colors">Subscription Plans</a></li>
+                    </ul>
+                </div>
+                <!-- Utility -->
+                <div>
+                    <h4 class="text-xs uppercase tracking-widest text-[#A67B5B] mb-8 font-sans">Utility</h4>
+                    <ul class="space-y-6 text-2xl font-serif">
+                        <li><a href="/page/contact/" class="hover:text-[#8A9A5B] transition-colors">Contact</a></li>
+                        <li><a href="/page/account/" class="hover:text-[#8A9A5B] transition-colors">Account</a></li>
+                        <li><a href="/page/shipping-returns/" class="hover:text-[#8A9A5B] transition-colors">Shipping & Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div >
+    </div >
+
+    <main class="min-h-screen pt-[64px]"> <!-- Adjusted padding to account for fixed navbar -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer (Retained) -->
+    <footer class="bg-white py-16 px-6 md:px-12 border-t border-gray-100 mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div class="col-span-1">
+                <h3 class="text-2xl font-serif tracking-[0.3em] uppercase text-[#2D2D2A] mb-4">GOURME</h3>
+                <p class="text-sm text-[#2D2D2A]/70 leading-relaxed font-serif">
+                    Cultivating the synergy between the forest floor and modern wellness.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-widest text-[#A67B5B] mb-6 font-sans font-semibold">Shop</h4>
+                <ul class="space-y-4 text-sm text-[#2D2D2A]/80 font-serif">
+                    <li><a href="/shop/" class="hover:text-[#8A9A5B] transition-colors">New Arrivals</a></li>
+                    <li><a href="/page/best-sellers/" class="hover:text-[#8A9A5B] transition-colors">Best Sellers</a></li>
+                    <li><a href="/page/subscription-plans/" class="hover:text-[#8A9A5B] transition-colors">Sub Plans</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-widest text-[#A67B5B] mb-6 font-sans font-semibold">Discover</h4>
+                <ul class="space-y-4 text-sm text-[#2D2D2A]/80 font-serif">
+                    <li><a href="/page/benefits/" class="hover:text-[#8A9A5B] transition-colors">The Library</a></li>
+                    <li><a href="/page/foraging-guides/" class="hover:text-[#8A9A5B] transition-colors">Foraging Guides</a></li>
+                    <li><a href="/page/story/" class="hover:text-[#8A9A5B] transition-colors">Our Story</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-[10px] uppercase tracking-widest text-[#A67B5B] mb-6 font-sans font-semibold">Connect</h4>
+                <ul class="space-y-4 text-sm text-[#2D2D2A]/80 font-serif">
+                    <li><a href="/page/contact/" class="hover:text-[#8A9A5B] transition-colors">Contact</a></li>
+                    <li><a href="/page/account/" class="hover:text-[#8A9A5B] transition-colors">My Account</a></li>
+                    <li><a href="/page/shipping-returns/" class="hover:text-[#8A9A5B] transition-colors">Shipping & Returns</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto border-t border-gray-100 pt-8">
+            <p class="text-[10px] uppercase tracking-widest text-[#A67B5B] font-sans">&copy; 2026 GOURME. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // --- Navigation & Search Toggle Logic ---
+        const menuBtn = document.getElementById('menu-btn');
+        const closeMenu = document.getElementById('close-menu');
+        const fullMenu = document.getElementById('full-menu');
+        const searchTriggerBtn = document.getElementById('search-trigger-btn');
+        const mobileSearchTrigger = document.getElementById('mobile-search-trigger');
+        const searchOverlay = document.getElementById('search-overlay');
+        const closeSearchBtn = document.getElementById('close-search');
+
+        // Mobile Menu Logic (Existing)
+        function toggleMobileMenu() {
+            const isClosed = fullMenu.classList.contains('-translate-y-full');
+            if (isClosed) {
+                fullMenu.classList.remove('-translate-y-full');
+                fullMenu.classList.add('translate-y-0');
+            } else {
+                fullMenu.classList.remove('translate-y-0');
+                fullMenu.classList.add('-translate-y-full');
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMobileMenu);
+        closeMenu.addEventListener('click', toggleMobileMenu);
+
+        // Search Toggle Logic (New)
+        function toggleSearchBar() {
+            searchOverlay.classList.toggle('hidden');
+        }
+
+        if(searchTriggerBtn) searchTriggerBtn.addEventListener('click', toggleSearchBar);
+        if(mobileSearchTrigger) mobileSearchTrigger.addEventListener('click', toggleSearchBar);
+        if(closeSearchBtn) closeSearchBtn.addEventListener('click', toggleSearchBar);
+    </script>
+</body>
+</html>
