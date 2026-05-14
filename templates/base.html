@@ -46,16 +46,25 @@
             <a href="/page/recipes/" class="text-[#2D2D2A] font-semibold hover:text-[var(--yonobi-sage)] transition-colors uppercase tracking-widest text-sm">Recipes</a>
         </div>
         
-        <!-- Right: Utility Icons & Search Trigger -->
-        <div class="flex items-center space-x-6 relative">
-            <!-- Search Trigger Button (Clickable Icon) -->
-            <button id="search-trigger-btn" class="text-[#2D2D2A] hover:opacity-70 transition-opacity hidden sm:block">
+        <!-- Right: Utility Icons & Search Bar -->
+        <div class="flex items-center space-x-2 sm:space-x-6 relative">
+            <!-- Desktop Search Input (Integrated) -->
+            <form action="/search/" method="GET" class="hidden sm:block flex items-center border-b-2 border-[#A67B5B] focus-within:border-[var(--yonobi-sage)] transition duration-300">
+                <input type="text" name="q" placeholder="Search..." required class="px-3 py-1 text-sm outline-none text-[#2D2D2A] w-48 focus:border-[var(--yonobi-sage)]">
+                <button type="submit" class="p-2 hover:bg-gray-100 transition">
+                    <i data-lucide="search" class="w-5 h-5 text-[#A67B5B]"></i>
+                </button>
+            </form>
+            <!-- Mobile Search Icon Trigger -->
+            <button id="mobile-search-trigger-nav" class="text-[#2D2D2A] hover:opacity-70 transition-opacity sm:hidden">
                 <i data-lucide="search" class="w-5 h-5" id="nav-search-icon"></i>
             </button>
+
             <!-- User Icon (Profile) -->
             <button id="profile-btn" class="text-[#2D2D2A] hover:opacity-70 transition-opacity relative">
                 <i data-lucide="user" class="w-5 h-5"></i>
             </button>
+
             <!-- Cart Icon -->
             <button id="cart-btn" class="text-[#2D2D2A] hover:opacity-70 transition-opacity relative">
                 <i data-lucide="shopping-bag" class="w-5 h-5"></i>
@@ -64,7 +73,7 @@
         </div>
     </nav>
 
-<!-- Search Overlay Component -->
+<!-- Search Overlay Component (Retained for mobile) -->
 <div id="search-overlay" class="fixed top-0 left-0 w-full h-full bg-[#F5F5F0]/95 backdrop-blur-sm z-[65] hidden items-center justify-center p-4">
     <form action="/search/" method="GET" class="w-full max-w-lg bg-white p-6 rounded-xl shadow-2xl flex space-x-3">
         <input type="text" name="q" placeholder="Search for products, categories..." required class="flex-grow border-b-2 border-[#A67B5B] focus:border-[var(--yonobi-sage)] outline-none px-1 py-1 text-lg transition duration-300">
@@ -136,7 +145,7 @@
                     </ul>
                 </div>
             </div>
-        </div >
+        </div>
     </div >
 
     <main class="min-h-screen pt-[64px]"> <!-- Adjusted padding to account for fixed navbar -->
@@ -190,10 +199,8 @@
         const menuBtn = document.getElementById('menu-btn');
         const closeMenu = document.getElementById('close-menu');
         const fullMenu = document.getElementById('full-menu');
-        const searchTriggerBtn = document.getElementById('search-trigger-btn');
-        const mobileSearchTrigger = document.getElementById('mobile-search-trigger');
+        const mobileSearchTriggerNav = document.getElementById('mobile-search-trigger-nav');
         const searchOverlay = document.getElementById('search-overlay');
-        const closeSearchBtn = document.getElementById('close-search');
 
         // Mobile Menu Logic (Existing)
         function toggleMobileMenu() {
@@ -210,14 +217,13 @@
         menuBtn.addEventListener('click', toggleMobileMenu);
         closeMenu.addEventListener('click', toggleMobileMenu);
 
-        // Search Toggle Logic (New)
+        // Search Toggle Logic (Updated to use overlay)
         function toggleSearchBar() {
             searchOverlay.classList.toggle('hidden');
         }
 
-        if(searchTriggerBtn) searchTriggerBtn.addEventListener('click', toggleSearchBar);
-        if(mobileSearchTrigger) mobileSearchTrigger.addEventListener('click', toggleSearchBar);
+        if(mobileSearchTriggerNav) mobileSearchTriggerNav.addEventListener('click', toggleSearchBar);
+        const closeSearchBtn = document.getElementById('close-search');
         if(closeSearchBtn) closeSearchBtn.addEventListener('click', toggleSearchBar);
     </script>
 </body>
-</html>
