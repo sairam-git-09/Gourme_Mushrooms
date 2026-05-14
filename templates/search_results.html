@@ -3,47 +3,55 @@
 {% block title %}Search Results for "{{ query }}"{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1>Search Results</h1>
-    <h2>Results for: "<span id="search-query">{{ query }}</span>"</h2>
+<div class="px-12 py-8">
+    <h1 class="text-4xl font-serif tracking-[0.2em] uppercase mb-2 text-[#2D2D2A]">Search Results</h1>
+    <h2 class="text-lg text-[#2D2D2A]/70 mb-6">Results for: "<span id="search-query" class="font-semibold">{{ query }}</span>"</h2>
 
     {% if products %}
-        <p class="text-success mb-4">Found {{ products|length }} matching item(s).</p>
+        <p class="text-[#8A9A5B] mb-8 font-sans">Found <span class="font-semibold">{{ products|length }}</span> matching item(s).</p>
         
-        <!-- Product Grid/List -->
-        <div class="row row-cols-1 row-cols-md-3 g-4" id="product-results-grid">
+        <!-- Product Grid - Matches inventory layout -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-16" id="product-results-grid">
             {% for product in products %}
-                <div class="col">
-                    <div class="card h-100 shadow-sm product-card">
-                        {% if product.primary_image %}
-                            <img src="{{ product.primary_image.url }}" class="card-img-top" alt="{{ product.name }}">
-                        {% endif %}
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text text-muted mb-2">Category: {{ product.category.title|default:"N/A" }}</p>
-                            <p class="fs-4 fw-bold text-primary">${{ product.price }}</p>
-                            <!-- Add a button here that links to the individual product page if available -->
-                            <a href="#" class="btn btn-sm btn-outline-primary mt-auto">View Details</a>
-                        </div>
-                    </div>
+            <div class="group relative overflow-hidden bg-white">
+                <!-- Primary Image -->
+                {% if product.primary_image %}
+                <img src="{{ product.primary_image.url }}" class="w-full transition-opacity duration-500 group-hover:opacity-0" alt="{{ product.name }}">
+                {% else %}
+                <div class="w-full aspect-square bg-gray-100 flex items-center justify-center transition-opacity duration-500 group-hover:opacity-0">No Primary</div>
+                {% endif %}
+                
+                <!-- Hover Image -->
+                {% if product.hover_image %}
+                <img src="{{ product.hover_image.url }}" class="absolute top-0 left-0 w-full opacity-0 transition-opacity duration-500 group-hover:opacity-100" alt="{{ product.name }} Hover">
+                {% else %}
+                <div class="absolute top-0 left-0 w-full aspect-square bg-gray-200 opacity-0 flex items-center justify-center transition-opacity duration-500 group-hover:opacity-100">No Hover</div>
+                {% endif %}
+                
+                <div class="p-4 text-center">
+                    <p class="font-bold uppercase tracking-tight text-[#2D2D2A]">{{ product.name }}</p>
+                    <p class="text-[#2D2D2A]/70">${{ product.price }}</p>
                 </div>
+            </div>
             {% endfor %}
         </div>
 
     {% else %}
-        <div class="alert alert-warning text-center" role="alert">
-            No products found matching the query "{{ query }}". Try a different term.
+        <div class="bg-[#D7C9B8]/20 border border-[#D7C9B8] rounded-lg p-8 text-center">
+            <p class="text-[#2D2D2A] text-lg">No products found matching the query "<span class="font-semibold">{{ query }}</span>". Try a different term.</p>
         </div>
     {% endif %}
 </div>
 
 <!-- Simple Search Form to allow refinement on the results page -->
-<div class="container mt-5 mb-5 p-3 border rounded bg-light">
-    <h5>Refine Your Search</h5>
-    <form action="{% url 'search' %}" method="GET" class="d-flex">
-        <input type="text" name="q" class="form-control me-2" placeholder="Enter new search term..." value="{{ query }}">
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
+<div class="px-12 py-12 bg-[#F5F5F0] border-t border-[#D7C9B8]">
+    <div class="max-w-md">
+        <h3 class="text-lg font-bold text-[#2D2D2A] mb-4">Refine Your Search</h3>
+        <form action="{% url 'search' %}" method="GET" class="flex flex-col sm:flex-row gap-3">
+            <input type="text" name="q" class="flex-grow px-4 py-2 border-b-2 border-[#A67B5B] focus:border-[#8A9A5B] outline-none text-[#2D2D2A] transition duration-300" placeholder="Enter new search term..." value="{{ query }}">
+            <button type="submit" class="px-6 py-2 bg-[#8A9A5B] text-white font-semibold hover:bg-[#7A8A4B] transition duration-300">Search</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
