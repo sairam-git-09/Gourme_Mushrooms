@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from django.db.models import Q
-from .models import Product, Category, PageContent
+from django.contrib import messages
+from .models import Product, Category, PageContent, ContactMessage
 
 def index(request):
     products = Product.objects.all()
@@ -92,3 +93,26 @@ def search_view(request):
     # Categories are included in context, though not strictly necessary for search results page itself
     categories = Category.objects.all() 
     return render(request, 'search_results.html', {'products': products, 'query': query, 'categories': categories})
+
+def contact_view(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone_number = request.POST.get('phone_number', '').strip()
+        message = request.POST.get('message', '').strip()
+        
+        if first_name and email and message:
+            ContactMessage.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone_number=phone_number,
+                message=message
+            )
+            messages.success(request, 'Thank you! Your message has been sent successfully.')
+            return redirect('contact')
+        else:
+            messages.error(request, 'Please fill in all required fields.')
+    
+    return render(request, 'contact.html')
