@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/pages/<slug:slug>/', views.api_page_detail, name='api_page_detail'),
     path('page/<slug:slug>/', views.page_detail, name='page_detail'),
     path('search/', views.search_view, name='search'),
+    path('contact/', views.contact_view, name='contact'),
 ]
