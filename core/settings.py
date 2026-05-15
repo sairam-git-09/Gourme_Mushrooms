@@ -150,7 +150,7 @@ STORAGES = {
 WHITENOISE_MANIFEST_STRICT = False
 
 # Add this line right below STORAGES to fix the Cloudinary attribute error
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 
 
