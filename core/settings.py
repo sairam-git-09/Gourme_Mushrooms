@@ -147,6 +147,9 @@ STORAGES = {
     },
 }
 
+# Compatibility for cloudinary_storage
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 WHITENOISE_MANIFEST_STRICT = False
 
 
