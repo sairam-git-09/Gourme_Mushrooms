@@ -138,19 +138,9 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
-    },
-}
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# Compatibility for cloudinary_storage
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
-WHITENOISE_MANIFEST_STRICT = False
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 
